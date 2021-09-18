@@ -10,16 +10,19 @@ import os
   
 root = tk.Tk()
 root.title("Statistical Analysis")
-root.geometry('1000x600')
+root.geometry('800x550')
+root.grid_columnconfigure(0, weight=1)
+root.grid_rowconfigure(0, weight=1)
+
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 pd.set_option('display.width', 1000)
     
-##style = ttk.Style(root)
-##style.configure('TNotebook.Tab', width=root.winfo_screenwidth())
-
-
 ## SETTING UP THE TABS
+################################################################################
+################################################################################
+################################################################################
+
 tabControl = ttk.Notebook(root)
 tab0 = ttk.Frame(tabControl)
 tab1 = ttk.Frame(tabControl)
@@ -38,42 +41,56 @@ tabControl.pack(expand = 1, fill ="both")
   
 ttk.Label(tab0).grid(column = 0,
                                     row = 0, 
-                                    padx = 30,
-                                    pady = 30)
-ttk.Label(tab1,
-          text ='Correlation Testing').grid(column = 0,
+                                    padx = 5,
+                                    pady = 10)
+ttk.Label(tab1).grid(column = 0,
                                     row = 0, 
-                                    padx = 30,
-                                    pady = 30)
+                                    padx = 5,
+                                    pady = 5)
 
-ttk.Label(tab2,
-          text ='Non-Parametric Hypothesis Test').grid(column = 0,
+ttk.Label(tab2).grid(column = 0,
                                     row = 0, 
-                                    padx = 30,
-                                    pady = 30)
-ttk.Label(tab3,
-          text ='Normal Testing').grid(column = 0,
+                                    padx = 5,
+                                    pady = 5)
+ttk.Label(tab3).grid(column = 0,
                                     row = 0, 
-                                    padx = 30,
-                                    pady = 30)
-ttk.Label(tab4,
-          text ='Parametric Hypothesis Testing').grid(column = 0,
+                                    padx = 5,
+                                    pady = 5)
+ttk.Label(tab4).grid(column = 0,
                                     row = 0, 
-                                    padx = 30,
-                                    pady = 30)
-ttk.Label(tab5,
-          text ='Stationary Testing').grid(column = 0,
+                                    padx = 5,
+                                    pady = 5)
+ttk.Label(tab5).grid(column = 0,
                                     row = 0, 
-                                    padx = 30,
-                                    pady = 30)
+                                    padx = 5,
+                                    pady = 5)
 
-# Create Text Field to display Data
-text = tk.Text(tab0, width=root.winfo_screenwidth(), height=root.winfo_screenheight())
+
+# Create Text Field to display Data(TAB0)
+########################################################################
+########################################################################
+
+text = tk.Text(tab0,
+               wrap="none")
+
 text.grid(column = 1,
            row = 1,
-           padx = 15,
-           pady = 15,
+           padx = 0,
+           pady = 0,
+          
            sticky='ew')
+
+## Add the Scrollbars for the Text Field
+yscrollbar = ttk.Scrollbar(tab0, orient='vertical', command=text.yview)
+yscrollbar.grid(row=1, column=3, sticky='ns')
+
+xscrollbar = ttk.Scrollbar(tab0, orient='horizontal', command=text.xview)
+xscrollbar.grid(row=2, column=1, sticky='ew')
+
+#  communicate back to the scrollbar
+text['yscrollcommand'] = yscrollbar.set
+text['xscrollcommand'] = xscrollbar.set
+
 
 
 ## IMPORTING DATA TAB
@@ -87,7 +104,7 @@ def open_text_file():
     f = fd.askopenfile(filetypes=filetypes)
     df = pd.read_csv(f, encoding='utf-8')
     # read the text file and show its content on the Text
-    text.insert('1.0', df)
+    text.insert(tk.END, df)
 
 open_button = ttk.Button(tab0,
                          text='Import CSV',
@@ -96,6 +113,103 @@ open_button.grid(column = 0,
            row = 0,
            padx = 5,
            pady = 5)
+
+
+##################################################################################
+##################################################################################
+##################################################################################
+##                          Tab1                                                ##
+##################################################################################
+##################################################################################
+##################################################################################
+
+text1 = tk.Text(tab1,
+               wrap="none")
+
+text1.grid(column = 1,
+           row = 1,
+           padx = 0,
+           pady = 15,
+          
+           sticky='ew')
+
+## Add the Scrollbars for the Text Field
+yscrollbar1 = ttk.Scrollbar(tab1, orient='vertical', command=text1.yview)
+yscrollbar1.grid(row=1, column=3, sticky='ns')
+
+xscrollbar1 = ttk.Scrollbar(tab1, orient='horizontal', command=text1.xview)
+xscrollbar1.grid(row=2, column=1, sticky='ew')
+
+#  communicate back to the scrollbar
+text1['yscrollcommand'] = yscrollbar1.set
+text1['xscrollcommand'] = xscrollbar1.set
+
+options = []
+
+def Coor():
+    import pandas as pd
+    from scipy.stats import pearsonr
+    from scipy.stats import spearmanr
+    from scipy.stats import kendalltau
+    from scipy.stats import chi2_contingency
+
+    filetypes = (
+        ('CSV files', '*.csv'),
+        ('All files', '*.*')
+    )
+    # show the open file dialog
+    f1 = fd.askopenfile(filetypes=filetypes)
+    df = pd.read_csv(f1, encoding='utf-8')
+    
+    df = df.select_dtypes(include=["float64", "int64"])
+    text1.insert(tk.END, df)
+    return df
+
+df = Coor()
+
+def mex(df):
+    options = list(df.columns)
+    return options
+    
+run = ttk.Button(tab1,
+                 text='Run Correlation Tests',
+                 command=Coor)
+
+run.grid(column = 0,
+           row = 0,
+           padx = 5,
+           pady = 5)
+
+def show():
+    label.config( text = clicked.get() )
+  
+# Dropdown menu options
+options = mex(df)
+  
+# datatype of menu text
+clicked = StringVar()
+  
+# initial menu text
+clicked.set( " " )
+
+clicked1 = StringVar()
+  
+# initial menu text
+clicked1.set( " " )
+  
+# Create Dropdown menu
+drop = OptionMenu(tab1, clicked , *options )
+drop.grid(column = 0,
+           row = 1,
+           padx = 5,
+           pady = 5)
+drop1 = OptionMenu(tab1, clicked1, *options )
+drop1.grid(column = 1,
+           row = 0,
+           padx = 5,
+           pady = 5)
+
+
 
 ## Run the App
 

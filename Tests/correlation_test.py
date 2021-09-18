@@ -1,11 +1,11 @@
-import pandas as pd
-from scipy.stats import pearsonr
-from scipy.stats import spearmanr
-from scipy.stats import kendalltau
-from scipy.stats import chi2_contingency
-
 
 def main(url = "adult.csv",  data1="age", data2="y"):
+    import pandas as pd
+    from scipy.stats import pearsonr
+    from scipy.stats import spearmanr
+    from scipy.stats import kendalltau
+    from scipy.stats import chi2_contingency
+    
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
 
