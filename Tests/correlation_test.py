@@ -1,10 +1,11 @@
-
+import pandas as pd
+from scipy.stats import pearsonr
+from scipy.stats import spearmanr
+from scipy.stats import kendalltau
+from scipy.stats import chi2_contingency
+    
 def main(url = "adult.csv",  data1="age", data2="y"):
-    import pandas as pd
-    from scipy.stats import pearsonr
-    from scipy.stats import spearmanr
-    from scipy.stats import kendalltau
-    from scipy.stats import chi2_contingency
+
     
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
@@ -24,7 +25,8 @@ def main(url = "adult.csv",  data1="age", data2="y"):
         print("    2. Observations in each sample are normally distributed")
         print("    3. Observations in each sample have the same variance \n")
         pearson(url = url, data1=data1, data2=data2)
-    except:
+    except ValueError:
+        print(ValueError)
         print("Passed")
 
     try:
@@ -33,7 +35,8 @@ def main(url = "adult.csv",  data1="age", data2="y"):
         print("    1. Observations in each sample are independent and identically distributed")
         print("    2. Observations in each sample can be ranked \n")
         spearman(url = url, data1=data1, data2=data2)
-    except:
+    except ValueError:
+        print(ValueError)
         print("Passed")
 
 
@@ -43,7 +46,8 @@ def main(url = "adult.csv",  data1="age", data2="y"):
         print("    1. Observations in each sample are independent and identically distributed")
         print("    2. Observations in each sample can be ranked \n")
         Kendalltau(url = url, data1=data1, data2=data2)
-    except:
+    except ValueError:
+        print(ValueError)
         print("Passed")
 
 
@@ -53,7 +57,8 @@ def main(url = "adult.csv",  data1="age", data2="y"):
         print("    1. Observations used in the calculation of the contingency table are independent")
         print("    2. 25 or more examples in each cell of the contingency table \n")
         CHI2(url = url, data1=data1, data2=data2)
-    except:
+    except ValueError:
+        print(ValueError)
         print("Passed")
 
     return
