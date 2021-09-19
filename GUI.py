@@ -147,12 +147,6 @@ text1['xscrollcommand'] = xscrollbar1.set
 options = []
 
 def Coor():
-    import pandas as pd
-    from scipy.stats import pearsonr
-    from scipy.stats import spearmanr
-    from scipy.stats import kendalltau
-    from scipy.stats import chi2_contingency
-
     filetypes = (
         ('CSV files', '*.csv'),
         ('All files', '*.*')
@@ -179,9 +173,6 @@ run.grid(column = 0,
            row = 0,
            padx = 5,
            pady = 5)
-
-def show():
-    label.config( text = clicked.get() )
   
 # Dropdown menu options
 options = mex(df)
