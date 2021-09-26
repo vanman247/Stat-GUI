@@ -7,7 +7,10 @@ import pandas as pd
 import numpy as np
 import os
 import sys
-from Tests import correlation_test
+from scipy.stats import pearsonr
+from scipy.stats import spearmanr
+from scipy.stats import kendalltau
+from scipy.stats import chi2_contingency
 
 
 root = tk.Tk()
@@ -33,7 +36,7 @@ tab3 = ttk.Frame(tabControl)
 tab4 = ttk.Frame(tabControl)
 tab5 = ttk.Frame(tabControl)
 
-tabControl.add(tab0, text ='Importing Data')
+tabControl.add(tab0, text ='View Dataset')
 tabControl.add(tab1, text ='Correlation Testing')
 tabControl.add(tab2, text ='Non-Parametric Hypothesis Test')
 tabControl.add(tab3, text ='Normal Testing')
@@ -114,7 +117,7 @@ def open_text_file():
     return
 
 open_button = ttk.Button(tab0,
-                         text='Import CSV',
+                         text='View csv file',
                          command=open_text_file)
 open_button.grid(column = 0,
            row = 0,
@@ -152,14 +155,30 @@ text1['yscrollcommand'] = yscrollbar1.set
 text1['xscrollcommand'] = xscrollbar1.set
 
 def Coor():
-    correlation_test.main()
+    direc="C:/Users/Ammon Van/Desktop/Fun Projects/Statistic Analysis/Tests"
+    filetypes = (("CSV", "*.CSV"), ("All Files", "*.*"))
+    url = fd.askopenfilename(initialdir=direc, title="Open File", filetypes=filetypes)
+    stuff = pd.read_csv(url)
+    stuff = stuff.select_dtypes(include=["float64", "int64"])
+    text1.insert(END, stuff)
+
     return
 
 open_button1 = ttk.Button(tab1,
-                         text='Run Corrilation Tests',
+                         text='Run correlation Tests',
                          command=Coor)
 open_button1.grid(column = 0,
            row = 0,
+           padx = 5,
+           pady = 5)
+entry1_1 = tk.Entry(tab1, textvariable=None)
+entry1_1.grid(column = 0,
+           row = 1,
+           padx = 5,
+           pady = 5)
+entry1_2 = tk.Entry(tab1, textvariable=None)
+entry1_2.grid(column = 0,
+           row = 2,
            padx = 5,
            pady = 5)
 
